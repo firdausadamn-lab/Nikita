@@ -156,7 +156,12 @@ export function TrainingProduct({ view }: { view: TrainingView }) {
 
   return (
     <><PlatformStyle /><div className="min-h-[100dvh] bg-[var(--bg)] text-[var(--ink)]">
-      <aside className="fixed inset-y-0 left-0 z-40 hidden w-64 border-r border-[var(--line)] bg-[var(--bg-raise)] p-5 lg:flex lg:flex-col">
+      {/* Thirteen links across five groups, plus a brand block and a phase
+          footer. On a laptop that is taller than the viewport, and inset-y-0
+          pins the height without letting anything move — so Mind and Progress
+          were cut off with no way to reach them. overscroll-contain stops the
+          page behind from taking over once the list hits its end. */}
+      <aside className="scroll-panel fixed inset-y-0 left-0 z-40 hidden w-64 overflow-y-auto overscroll-contain border-r border-[var(--line)] bg-[var(--bg-raise)] p-5 lg:flex lg:flex-col">
         <Link href="/" className="flex items-center gap-3"><span className="grid h-9 w-9 place-items-center border border-[var(--line-strong)] font-display">WH</span><span><span className="block font-display text-lg">{t({ ru: "ДОМ БОРЦА", en: "WRESTLER'S HOME" })}</span><span className="block font-mono text-[.55rem] uppercase tracking-[.15em] text-[var(--oxblood-bright)]">8-WEEK PROGRAM</span></span></Link>
         <nav className="mt-9" aria-label="Training program navigation">
           {navGroups.map((group) => (
@@ -226,7 +231,9 @@ export function TrainingProduct({ view }: { view: TrainingView }) {
 
       <nav className="mobile-member-nav lg:hidden" aria-label="Mobile training navigation">{navItems.slice(0, 5).map(([href, id, Icon, label]) => <Link href={href} key={href} className={view === id ? "!text-[var(--ink)]" : ""}><Icon size={20} /><span>{t(label)}</span></Link>)}</nav>
 
-      {menuOpen && <div className="fixed inset-0 z-50 bg-[var(--bg)] p-5 lg:hidden"><div className="flex items-center justify-between"><span className="font-display text-2xl">{t({ ru: "ДОМ БОРЦА", en: "WRESTLER'S HOME" })}</span><button className="grid h-11 w-11 place-items-center" onClick={() => setMenuOpen(false)} aria-label="Close program navigation"><X size={25} /></button></div><nav className="mt-10">{navItems.map(([href, , Icon, label]) => <Link onClick={() => setMenuOpen(false)} href={href} key={href} className="flex items-center gap-4 border-b border-[var(--line)] py-5 font-display text-3xl"><Icon size={24} />{t(label)}</Link>)}</nav><div className="mt-8 grid grid-cols-2 gap-3"><Link href="/training/resources" className="quiet-button justify-center">{t({ ru: "Материалы", en: "Resources" })}</Link><Link href="/training/support" className="quiet-button justify-center">{t({ ru: "Помощь", en: "Support" })}</Link></div></div>}
+      {/* Same clipping, worse: the full list at display size runs well past a
+          phone screen, so the bottom third was unreachable. */}
+      {menuOpen && <div className="scroll-panel fixed inset-0 z-50 overflow-y-auto overscroll-contain bg-[var(--bg)] p-5 lg:hidden"><div className="flex items-center justify-between"><span className="font-display text-2xl">{t({ ru: "ДОМ БОРЦА", en: "WRESTLER'S HOME" })}</span><button className="grid h-11 w-11 place-items-center" onClick={() => setMenuOpen(false)} aria-label="Close program navigation"><X size={25} /></button></div><nav className="mt-10">{navItems.map(([href, , Icon, label]) => <Link onClick={() => setMenuOpen(false)} href={href} key={href} className="flex items-center gap-4 border-b border-[var(--line)] py-5 font-display text-3xl"><Icon size={24} />{t(label)}</Link>)}</nav><div className="mt-8 grid grid-cols-2 gap-3"><Link href="/training/resources" className="quiet-button justify-center">{t({ ru: "Материалы", en: "Resources" })}</Link><Link href="/training/support" className="quiet-button justify-center">{t({ ru: "Помощь", en: "Support" })}</Link></div></div>}
     </div></>
   );
 }

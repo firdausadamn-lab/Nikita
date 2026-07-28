@@ -16,7 +16,7 @@ export function PlatformStyle() {
       .method-row { display:grid; grid-template-columns:3rem minmax(12rem,.8fr) 1fr; gap:clamp(1rem,4vw,4rem); align-items:center; padding:clamp(1.75rem,5vw,3.5rem) 0; border-bottom:1px solid var(--line); }
       .pricing-panel { border:1px solid var(--line-strong); background:var(--bg-panel); padding:clamp(1.5rem,5vw,3.5rem); box-shadow:0 26px 80px rgba(64,21,16,.18); }
       .member-grid { display:grid; min-height:100dvh; grid-template-columns:16rem minmax(0,1fr); }
-      .member-sidebar { position:sticky; top:0; height:100dvh; border-right:1px solid var(--line); background:var(--bg-raise); padding:1.5rem; }
+      .member-sidebar { position:sticky; top:0; height:100dvh; overflow-y:auto; overscroll-behavior:contain; scrollbar-width:thin; scrollbar-color:var(--line-strong) transparent; border-right:1px solid var(--line); background:var(--bg-raise); padding:1.5rem; }
       .member-content { width:min(1120px,92%); margin-inline:auto; padding:2rem 0 7rem; }
       .member-nav-link { display:flex; align-items:center; gap:.75rem; min-height:2.75rem; padding:.65rem .75rem; color:var(--ink-mute); font-size:.82rem; border:1px solid transparent; }
       .member-nav-link:hover,.member-nav-link-active { color:var(--ink); background:var(--bg-panel); border-color:var(--line); }

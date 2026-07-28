@@ -491,6 +491,36 @@ img { display: block; max-width: 100%; }
 }
 
 /* --------------------------------------------------------------------------
+   Scrolling panels — the program sidebar and the two mobile menus.
+
+   Named scroll-panel, NOT member-sidebar. That name is already taken by the
+   older sidebar in member-platform.tsx, and platform-style.tsx hides it
+   outright below 768px — borrowing it here silently hid both mobile menus.
+
+   These scroll because their contents outrun the viewport on a short laptop or
+   any phone. A default scrollbar would sit on this dark panel as a bright grey
+   slab, so it is thinned and tinted to the surface it rides on, gaining
+   contrast only on hover: visible when you reach for it, quiet while you read.
+   The track stays transparent and the thumb is inset by a transparent border,
+   so it never touches the panel edge.
+   -------------------------------------------------------------------------- */
+.scroll-panel {
+  scrollbar-width: thin;
+  scrollbar-color: var(--line-strong) transparent;
+}
+.scroll-panel::-webkit-scrollbar { width: 11px; }
+.scroll-panel::-webkit-scrollbar-track { background: transparent; }
+.scroll-panel::-webkit-scrollbar-thumb {
+  border: 3px solid transparent;
+  border-radius: 999px;
+  background-color: var(--line-strong);
+  background-clip: padding-box;
+}
+.scroll-panel:hover::-webkit-scrollbar-thumb {
+  background-color: var(--ink-mute);
+}
+
+/* --------------------------------------------------------------------------
    Grouped sidebar navigation
    -------------------------------------------------------------------------- */
 .nav-group + .nav-group {

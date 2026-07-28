@@ -58,7 +58,7 @@ export function PublicHeader() {
       </div>
 
       {open && (
-        <nav id="mobile-nav" className="fixed inset-0 top-[4.5rem] flex flex-col bg-[var(--bg)] px-[4vw] py-8 lg:hidden" aria-label="Mobile navigation">
+        <nav id="mobile-nav" className="scroll-panel fixed inset-0 top-[4.5rem] flex flex-col overflow-y-auto overscroll-contain bg-[var(--bg)] px-[4vw] py-8 lg:hidden" aria-label="Mobile navigation">
           {links.map(([href, label], index) => (
             <Link key={href} href={href} onClick={() => setOpen(false)} className="flex items-baseline gap-4 border-b border-[var(--line)] py-5 font-display text-4xl">
               <span className="font-mono text-xs text-[var(--ink-mute)]">0{index + 1}</span>{t(label)}
