@@ -1,0 +1,8 @@
+# Auth is Next.js route handlers (app/api/auth/*) plus the middleware, not
+# standalone Netlify Functions, so there is no functions directory to declare.
+[build]
+  command = "npm run build"
+  publish = ".next"
+
+[build.environment]
+  NODE_VERSION = "22"

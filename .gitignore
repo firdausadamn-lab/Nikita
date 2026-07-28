@@ -1,0 +1,18 @@
+node_modules
+.next
+# Every env file except .env.example, which is documentation and holds no
+# values. The service role key lives in .env.local and must never be committed.
+.env
+.env.local
+.env.production
+.env*.local
+*.tsbuildinfo
+next-env.d.ts
+
+# Netlify build output. Regenerated on every build, and it holds a compiled
+# copy of whatever the middleware was last time — which is how a deleted gate
+# comes back to life if it gets committed.
+.netlify
+
+# Dev debris
+*.log

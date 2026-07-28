@@ -1,0 +1,406 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Nikita · The Wrestler's Home</title>
+  <meta name="description" content="Nikita — Greco-Roman strength coach. Get the 8-week Wrestling Foundation program. Message to join." />
+  <meta name="robots" content="index, follow" />
+
+  <meta property="og:title" content="Nikita · The Wrestler's Home" />
+  <meta property="og:description" content="12 years on the mat, turned into an 8-week strength program. Message to get started." />
+  <meta property="og:type" content="profile" />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&family=Manrope:wght@400;500;600&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet" />
+
+  <style>
+    :root {
+      --ground: #0b0a09;
+      --panel: #1a1716;
+      --panel-hi: #221e1c;
+      --line: #2c2825;
+      --line-strong: #3a3532;
+      --bone: #ece7df;
+      --soft: #b8afa2;
+      --mute: #837a6f;
+      --oxblood: #9a2c25;
+      --oxblood-hot: #b8382e;
+      --steel: #9aa1a7;
+      --ease-out: cubic-bezier(.23, 1, .32, 1);
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html { background: var(--ground); }
+
+    body {
+      min-height: 100dvh;
+      color: var(--bone);
+      font-family: "Manrope", system-ui, sans-serif;
+      -webkit-font-smoothing: antialiased;
+      background:
+        radial-gradient(120% 80% at 50% -10%, rgba(154, 44, 37, .16) 0%, transparent 55%),
+        linear-gradient(180deg, #0d0b0a 0%, var(--ground) 40%, #080707 100%);
+      display: flex;
+      justify-content: center;
+      padding: clamp(1.5rem, 5vw, 3.5rem) 1.25rem 3.5rem;
+    }
+
+    .shell {
+      width: 100%;
+      max-width: 30rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .lang {
+      align-self: flex-end;
+      display: inline-flex;
+      border: 1px solid var(--line-strong);
+      border-radius: 999px;
+      overflow: hidden;
+      margin-bottom: 1.75rem;
+      font-family: "JetBrains Mono", monospace;
+    }
+    .lang button {
+      appearance: none;
+      background: transparent;
+      border: 0;
+      color: var(--mute);
+      padding: .45rem .85rem;
+      font: inherit;
+      font-size: .64rem;
+      letter-spacing: .14em;
+      cursor: pointer;
+      transition: color .2s var(--ease-out);
+    }
+    .lang button[aria-pressed="true"] {
+      background: var(--oxblood);
+      color: var(--bone);
+    }
+
+    .avatar {
+      position: relative;
+      width: 6.5rem;
+      height: 6.5rem;
+      display: grid;
+      place-items: center;
+      border: 1px solid var(--line-strong);
+      border-radius: 50%;
+      background: radial-gradient(90% 90% at 50% 20%, var(--panel-hi), var(--panel));
+      box-shadow: 0 0 0 6px rgba(154, 44, 37, .07), inset 0 1px 0 rgba(236,231,223,.05);
+    }
+    .avatar span {
+      font-family: "Oswald", sans-serif;
+      font-weight: 700;
+      font-size: 1.9rem;
+      letter-spacing: .04em;
+      color: var(--bone);
+    }
+    .avatar::after {
+      content: "";
+      position: absolute;
+      inset: -1px;
+      border-radius: 50%;
+      border: 1px solid transparent;
+      border-top-color: var(--oxblood-hot);
+      opacity: .8;
+    }
+
+    .eyebrow {
+      margin-top: 1.4rem;
+      font-family: "JetBrains Mono", monospace;
+      font-size: .64rem;
+      letter-spacing: .22em;
+      text-transform: uppercase;
+      color: var(--oxblood-hot);
+    }
+
+    h1 {
+      margin-top: .5rem;
+      font-family: "Oswald", sans-serif;
+      font-weight: 700;
+      font-size: clamp(2.6rem, 12vw, 3.4rem);
+      line-height: .92;
+      letter-spacing: .01em;
+      text-transform: uppercase;
+    }
+
+    .home-line {
+      margin-top: .55rem;
+      font-family: "Oswald", sans-serif;
+      font-weight: 500;
+      font-size: .95rem;
+      letter-spacing: .16em;
+      text-transform: uppercase;
+      color: var(--steel);
+    }
+
+    .bio {
+      margin-top: 1.15rem;
+      max-width: 26rem;
+      text-align: center;
+      color: var(--soft);
+      font-size: .96rem;
+      line-height: 1.6;
+    }
+
+    .stats {
+      display: flex;
+      margin-top: 1.5rem;
+      width: 100%;
+      border-top: 1px solid var(--line);
+      border-bottom: 1px solid var(--line);
+    }
+    .stat {
+      flex: 1;
+      padding: .95rem .5rem;
+      text-align: center;
+    }
+    .stat + .stat { border-left: 1px solid var(--line); }
+    .stat b {
+      display: block;
+      font-family: "Oswald", sans-serif;
+      font-weight: 600;
+      font-size: 1.5rem;
+      color: var(--bone);
+    }
+    .stat small {
+      display: block;
+      margin-top: .2rem;
+      font-family: "JetBrains Mono", monospace;
+      font-size: .58rem;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+      color: var(--mute);
+    }
+
+    .links {
+      width: 100%;
+      margin-top: 1.9rem;
+      display: flex;
+      flex-direction: column;
+      gap: .85rem;
+    }
+
+    .link {
+      --fill: var(--panel);
+      position: relative;
+      display: flex;
+      align-items: center;
+      gap: .9rem;
+      width: 100%;
+      padding: 1.1rem 1.15rem;
+      border: 1px solid var(--line-strong);
+      background: var(--fill);
+      color: var(--bone);
+      text-decoration: none;
+      transition: transform .16s var(--ease-out), border-color .2s var(--ease-out), background-color .2s var(--ease-out);
+      opacity: 0;
+      transform: translateY(10px);
+      animation: rise .55s var(--ease-out) forwards;
+    }
+    .link:nth-child(1) { animation-delay: .05s; }
+    .link:nth-child(2) { animation-delay: .12s; }
+    .link:hover { background: var(--panel-hi); }
+    .link:active { transform: scale(.985); }
+
+    .link .ic {
+      flex: none;
+      width: 2.2rem;
+      height: 2.2rem;
+      display: grid;
+      place-items: center;
+      border: 1px solid var(--line-strong);
+      border-radius: 50%;
+      color: var(--soft);
+    }
+    .link .body { flex: 1; min-width: 0; }
+    .link .body b {
+      display: block;
+      font-family: "Oswald", sans-serif;
+      font-weight: 600;
+      font-size: 1.02rem;
+      letter-spacing: .02em;
+      text-transform: uppercase;
+    }
+    .link .body small {
+      display: block;
+      margin-top: .12rem;
+      color: var(--mute);
+      font-size: .78rem;
+    }
+    .link .arw {
+      flex: none;
+      color: var(--mute);
+      transition: transform .2s var(--ease-out), color .2s var(--ease-out);
+    }
+    .link:hover .arw { transform: translateX(3px); color: var(--soft); }
+
+    .link.primary {
+      --fill: var(--oxblood);
+      border-color: var(--oxblood-hot);
+      box-shadow: inset 0 1px 0 rgba(255,255,255,.06);
+    }
+    .link.primary:hover { background: var(--oxblood-hot); }
+    .link.primary .ic { border-color: rgba(236,231,223,.35); color: var(--bone); }
+    .link.primary .body small { color: rgba(236,231,223,.72); }
+    .link.primary .arw { color: rgba(236,231,223,.8); }
+
+    .card {
+      width: 100%;
+      margin-top: 1.4rem;
+      border: 1px solid var(--line);
+      background: var(--panel);
+      padding: 1.25rem 1.2rem 1.35rem;
+    }
+    .card .eyebrow { margin-top: 0; color: var(--steel); }
+    .card ul {
+      list-style: none;
+      margin-top: .9rem;
+      display: grid;
+      gap: .55rem;
+    }
+    .card li {
+      display: flex;
+      gap: .7rem;
+      align-items: baseline;
+      color: var(--soft);
+      font-size: .9rem;
+      line-height: 1.45;
+    }
+    .card li i {
+      flex: none;
+      font-style: normal;
+      font-family: "JetBrains Mono", monospace;
+      font-size: .68rem;
+      color: var(--oxblood-hot);
+      letter-spacing: .05em;
+    }
+
+    footer {
+      margin-top: 2.2rem;
+      text-align: center;
+      color: var(--mute);
+      font-family: "JetBrains Mono", monospace;
+      font-size: .58rem;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+      line-height: 1.7;
+    }
+
+    .en, .ru { display: none; }
+    :root[data-lang="en"] .en { display: revert; }
+    :root[data-lang="ru"] .ru { display: revert; }
+
+    @keyframes rise { to { opacity: 1; transform: translateY(0); } }
+
+    @media (prefers-reduced-motion: reduce) {
+      .link { animation: none; opacity: 1; transform: none; }
+      .link:active { transform: none; }
+    }
+  </style>
+</head>
+<body>
+  <main class="shell">
+    <div class="lang" role="group" aria-label="Language / Язык">
+      <button type="button" data-set="en" aria-pressed="true">EN</button>
+      <button type="button" data-set="ru" aria-pressed="false">RU</button>
+    </div>
+
+    <div class="avatar" aria-hidden="true"><span>WH</span></div>
+
+    <p class="eyebrow">
+      <span class="en">Greco-Roman strength</span>
+      <span class="ru">Силовая борцовская подготовка</span>
+    </p>
+    <h1>Nikita</h1>
+    <p class="home-line">The Wrestler's Home · Дом борца</p>
+
+    <p class="bio">
+      <span class="en">Nikita first stepped onto the mat at six. Twelve years of repetition, strength work, and competitive discipline, turned into a system you can train beyond the wrestling room. Technique begins with attention. Strength begins with repetition.</span>
+      <span class="ru">Никита вышел на ковёр в шесть лет. Двенадцать лет повторений, силовой работы и соревновательной дисциплины переведены в систему, доступную вне борцовского зала. Техника начинается с внимания. Сила начинается с повторения.</span>
+    </p>
+
+    <div class="stats">
+      <div class="stat">
+        <b>12</b>
+        <small><span class="en">years on the mat</span><span class="ru">лет на ковре</span></small>
+      </div>
+      <div class="stat">
+        <b>8</b>
+        <small><span class="en">week program</span><span class="ru">недель курса</span></small>
+      </div>
+      <div class="stat">
+        <b>RU/EN</b>
+        <small><span class="en">bilingual</span><span class="ru">два языка</span></small>
+      </div>
+    </div>
+
+    <nav class="links" aria-label="Links">
+      <a class="link primary" href="https://www.instagram.com/direct/t/113130960074619/" target="_blank" rel="noopener">
+        <span class="ic" aria-hidden="true">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l2.2 4.6 5 .7-3.6 3.5.9 5-4.5-2.4L7.5 20l.9-5L4.8 8.3l5-.7z"/></svg>
+        </span>
+        <span class="body">
+          <b><span class="en">Get the Program</span><span class="ru">Получить программу</span></b>
+          <small><span class="en">8-week Wrestling Foundation. Message to join.</span><span class="ru">8-недельная борцовская база. Напишите, чтобы начать.</span></small>
+        </span>
+        <span class="arw" aria-hidden="true">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+        </span>
+      </a>
+
+      <a class="link" href="https://www.instagram.com/direct/t/113130960074619/" target="_blank" rel="noopener">
+        <span class="ic" aria-hidden="true">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.4 8.4 0 0 1-8.5 8.3 8.6 8.6 0 0 1-4-.9L3 20l1.1-5.4a8.3 8.3 0 0 1-.9-3.8A8.4 8.4 0 0 1 11.7 3h.3A8.4 8.4 0 0 1 21 11.5z"/></svg>
+        </span>
+        <span class="body">
+          <b><span class="en">Message Nikita</span><span class="ru">Написать Никите</span></b>
+          <small><span class="en">Questions, access, or coaching. Straight to DMs.</span><span class="ru">Вопросы, доступ или тренировки. Напрямую в директ.</span></small>
+        </span>
+        <span class="arw" aria-hidden="true">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+        </span>
+      </a>
+    </nav>
+
+    <section class="card">
+      <p class="eyebrow"><span class="en">What the program trains</span><span class="ru">Что развивает программа</span></p>
+      <ul>
+        <li><i>01</i><span><span class="en">Strength. Heavy compound work, controlled tempo, loads you can repeat clean.</span><span class="ru">Сила. Тяжёлые базовые движения, управляемый темп, чистая нагрузка.</span></span></li>
+        <li><i>02</i><span><span class="en">Power and endurance. Explosive reps, bands, and intervals under fatigue.</span><span class="ru">Мощность и выносливость. Взрывные повторы, резина и интервалы.</span></span></li>
+        <li><i>03</i><span><span class="en">Control. Grip, neck, and trunk tied into one working system.</span><span class="ru">Контроль. Хват, шея и корпус в одной рабочей системе.</span></span></li>
+        <li><i>04</i><span><span class="en">Gym and home pathways, with a substitution for every exercise.</span><span class="ru">Пути для зала и дома, с заменой для каждого упражнения.</span></span></li>
+      </ul>
+    </section>
+
+    <footer>
+      <span class="en">Strength has a home.</span>
+      <span class="ru">Сила обрела дом.</span><br />
+      © 2026 The Wrestler's Home
+    </footer>
+  </main>
+
+  <script>
+    (function () {
+      var root = document.documentElement;
+      root.setAttribute("data-lang", "en");
+      var buttons = document.querySelectorAll(".lang button");
+      buttons.forEach(function (btn) {
+        btn.addEventListener("click", function () {
+          var lang = btn.getAttribute("data-set");
+          root.setAttribute("data-lang", lang);
+          root.lang = lang;
+          buttons.forEach(function (b) {
+            b.setAttribute("aria-pressed", String(b === btn));
+          });
+        });
+      });
+    })();
+  </script>
+</body>
+</html>

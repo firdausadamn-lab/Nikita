@@ -1,0 +1,750 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ==========================================================================
+   IRON & OXBLOOD — design system
+   Dark-committed: the physical scene is a dim pre-dawn weight room.
+   Warm charcoal base, oxblood hot accent, cool steel for tension.
+   All values OKLCH-derived; no pure #000 / #fff.
+   ========================================================================== */
+
+:root {
+  /* Surfaces (warm charcoal ramp) */
+  --bg: #0b0a09;
+  --bg-raise: #131110;
+  --bg-panel: #1a1716;
+  --line: #2a2523;
+  --line-strong: #3a3532;
+
+  /* Text (warm bone) */
+  --ink: #ece7df;
+  --ink-soft: #b8afa2;
+  --ink-mute: #837a6f;
+
+  /* Accents */
+  --oxblood: #9a2c25;
+  --oxblood-bright: #b8382e;
+  --oxblood-deep: #641813;
+  --steel: #9aa1a7;
+  --steel-deep: #5c646b;
+
+  /* Motion */
+  --e-quint: cubic-bezier(0.23, 1, 0.32, 1);
+  --e-expo: cubic-bezier(0.16, 1, 0.3, 1);
+  --e-drawer: cubic-bezier(0.32, 0.72, 0, 1);
+
+  --shell: min(1360px, 92vw);
+}
+
+* { box-sizing: border-box; }
+
+html {
+  scroll-behavior: smooth;
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--ink);
+  font-family: var(--font-sans), system-ui, sans-serif;
+  font-feature-settings: "kern", "liga";
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+  overflow-x: hidden;
+}
+
+::selection {
+  background: var(--oxblood);
+  color: var(--ink);
+}
+
+/* Custom scrollbar — subtle, on-brand */
+::-webkit-scrollbar { width: 10px; height: 10px; }
+::-webkit-scrollbar-track { background: var(--bg); }
+::-webkit-scrollbar-thumb {
+  background: var(--line-strong);
+  border-radius: 10px;
+  border: 2px solid var(--bg);
+}
+::-webkit-scrollbar-thumb:hover { background: var(--steel-deep); }
+
+/* Focus visibility for keyboard users */
+:focus-visible {
+  outline: 2px solid var(--oxblood-bright);
+  outline-offset: 3px;
+}
+
+a { color: inherit; text-decoration: none; }
+button { font: inherit; color: inherit; cursor: pointer; }
+img { display: block; max-width: 100%; }
+
+/* --------------------------------------------------------------------------
+   Typography helpers
+   -------------------------------------------------------------------------- */
+.font-display {
+  font-family: var(--font-display), "Oswald", sans-serif;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  line-height: 0.92;
+  text-transform: uppercase;
+}
+.font-mono { font-family: var(--font-mono), ui-monospace, monospace; }
+
+.eyebrow {
+  font-family: var(--font-mono), ui-monospace, monospace;
+  font-size: 0.72rem;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  color: var(--ink-mute);
+}
+
+/* Cyrillic runs slightly taller/wider — nudge display tracking so RU headlines
+   don't feel cramped against the same scale as Latin. */
+:root[lang="ru"] .font-display { letter-spacing: 0.005em; }
+
+/* --------------------------------------------------------------------------
+   Layout
+   -------------------------------------------------------------------------- */
+.shell { width: var(--shell); margin-inline: auto; }
+.section { position: relative; padding-block: clamp(5rem, 12vh, 9rem); }
+
+.hairline { height: 1px; background: var(--line); border: 0; }
+
+/* Oxblood rule used to open sections */
+.rule-accent {
+  width: 3.5rem; height: 3px;
+  background: var(--oxblood-bright);
+  border-radius: 2px;
+}
+
+/* --------------------------------------------------------------------------
+   Grain / noise overlay — fixed, pointer-events off (never on scroll layers)
+   -------------------------------------------------------------------------- */
+.grain-fixed {
+  position: fixed; inset: 0; z-index: 60;
+  pointer-events: none;
+  opacity: 0.05;
+  mix-blend-mode: overlay;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+/* Vignette to seat cinematic imagery into the page */
+.vignette::after {
+  content: "";
+  position: absolute; inset: 0;
+  pointer-events: none;
+  background: radial-gradient(120% 90% at 50% 30%, transparent 40%, rgba(11,10,9,0.55) 100%);
+}
+
+/* --------------------------------------------------------------------------
+   Motion keyframes
+   -------------------------------------------------------------------------- */
+@keyframes marquee {
+  from { transform: translate3d(0, 0, 0); }
+  to { transform: translate3d(-50%, 0, 0); }
+}
+.marquee-track {
+  display: inline-flex;
+  white-space: nowrap;
+  animation: marquee 32s linear infinite;
+  will-change: transform;
+}
+.marquee-track:hover { animation-play-state: paused; }
+
+@keyframes shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+.shimmer {
+  background: linear-gradient(100deg, transparent 20%, rgba(236,231,223,0.10) 50%, transparent 80%);
+  background-size: 200% 100%;
+  animation: shimmer 2.4s var(--e-quint) infinite;
+}
+
+@keyframes ember {
+  0%, 100% { opacity: 0.55; }
+  50% { opacity: 1; }
+}
+.ember { animation: ember 3.2s ease-in-out infinite; }
+
+/* Image placeholder when a real photo is not yet present */
+.photo-placeholder {
+  background:
+    radial-gradient(80% 60% at 30% 20%, rgba(154,44,37,0.22), transparent 60%),
+    radial-gradient(70% 80% at 80% 90%, rgba(92,100,107,0.16), transparent 60%),
+    linear-gradient(160deg, #17140f 0%, #0d0b0a 60%, #0b0a09 100%);
+}
+
+/* --------------------------------------------------------------------------
+   Access gate — the code screen. Split: identity left, entry right.
+   -------------------------------------------------------------------------- */
+.access-shell {
+  display: grid;
+  min-height: 100dvh;
+  grid-template-columns: minmax(0, 1.15fr) minmax(20rem, 0.85fr);
+}
+.access-identity {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 3rem;
+  padding: clamp(1.4rem, 4vw, 4.5rem);
+  overflow: hidden;
+}
+/* Oversized ring as ground texture, never as a readable element. */
+.access-identity::after {
+  content: "";
+  position: absolute;
+  right: -6vw;
+  bottom: -12vh;
+  z-index: 0;
+  width: 46vw;
+  height: 46vw;
+  border: 1px solid var(--line);
+  border-radius: 50%;
+  background: radial-gradient(60% 60% at 40% 30%, rgba(154, 44, 37, 0.14), transparent 70%);
+  pointer-events: none;
+}
+.access-mark,
+.access-statement,
+.access-foot { position: relative; z-index: 1; }
+.access-mark {
+  display: flex;
+  align-items: center;
+  gap: 0.85rem;
+  font-family: var(--font-mono), ui-monospace, monospace;
+  font-size: 0.7rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+}
+.access-monogram {
+  display: grid;
+  width: 2.75rem;
+  height: 2.75rem;
+  place-items: center;
+  border: 1px solid var(--line-strong);
+  font-family: var(--font-display), "Oswald", sans-serif;
+  font-size: 0.9rem;
+  color: var(--ink);
+}
+.access-statement { max-width: 42rem; }
+.access-title {
+  margin-top: 1.2rem;
+  font-family: var(--font-display), "Oswald", sans-serif;
+  font-size: clamp(2.9rem, 6.5vw, 6.5rem);
+  font-weight: 700;
+  line-height: 0.9;
+  letter-spacing: -0.01em;
+  text-transform: uppercase;
+}
+.access-body {
+  max-width: 34rem;
+  margin-top: 1.5rem;
+  color: var(--ink-soft);
+  font-size: clamp(0.98rem, 1.3vw, 1.12rem);
+  line-height: 1.65;
+}
+.access-foot {
+  font-family: var(--font-mono), ui-monospace, monospace;
+  font-size: 0.64rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--ink-mute);
+}
+.access-panel {
+  display: flex;
+  flex-direction: column;
+  gap: 2.5rem;
+  padding: clamp(1.4rem, 3.5vw, 3.5rem);
+  border-left: 1px solid var(--line);
+  background: var(--bg-panel);
+}
+.access-panel-top { display: flex; justify-content: flex-end; }
+.access-form { width: min(100%, 27rem); margin: auto 0; }
+
+/* Two ways in, weighted equally. A segmented pill would read as a setting;
+   these read as two doors, which is what they are. */
+.access-modes {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  margin-bottom: 2rem;
+  border-bottom: 1px solid var(--line);
+}
+.access-mode {
+  padding: 0 0 0.85rem;
+  margin-bottom: -1px;
+  border-bottom: 2px solid transparent;
+  color: var(--ink-mute);
+  font-family: var(--font-mono), ui-monospace, monospace;
+  font-size: 0.68rem;
+  letter-spacing: 0.14em;
+  text-align: left;
+  text-transform: uppercase;
+  transition: color 160ms ease, border-color 160ms ease;
+}
+.access-mode:last-child { text-align: right; }
+.access-mode:hover { color: var(--ink-soft); }
+.access-mode[aria-pressed="true"] {
+  border-bottom-color: var(--oxblood-bright);
+  color: var(--ink);
+}
+
+.access-field + .access-field { margin-top: 1.35rem; }
+.access-label-row {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 1rem;
+}
+.access-reveal {
+  margin-bottom: 0.7rem;
+  color: var(--ink-mute);
+  font-family: var(--font-mono), ui-monospace, monospace;
+  font-size: 0.62rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  transition: color 160ms ease;
+}
+.access-reveal:hover { color: var(--ink); }
+
+.access-hint {
+  margin-top: 0.55rem;
+  color: var(--ink-mute);
+  font-size: 0.72rem;
+}
+.access-inline {
+  display: block;
+  margin-top: 1rem;
+  border-bottom: 1px solid var(--line-strong);
+  color: var(--ink-soft);
+  font-size: 0.78rem;
+  transition: color 160ms ease, border-color 160ms ease;
+}
+.access-inline:hover { color: var(--ink); border-color: var(--oxblood-bright); }
+.access-sent {
+  margin-top: 1rem;
+  padding: 0.85rem 1rem;
+  border: 1px solid var(--line-strong);
+  background: var(--bg);
+  font-size: 0.84rem;
+  line-height: 1.5;
+}
+
+.access-index {
+  display: block;
+  margin-bottom: 2rem;
+  font-family: var(--font-mono), ui-monospace, monospace;
+  font-size: 0.66rem;
+  letter-spacing: 0.18em;
+  color: var(--ink-mute);
+}
+.access-label {
+  display: block;
+  margin-bottom: 0.7rem;
+  font-size: 0.84rem;
+  font-weight: 600;
+}
+.access-input {
+  width: 100%;
+  min-height: 3.6rem;
+  padding: 0 1rem;
+  border: 1px solid var(--line-strong);
+  background: var(--bg);
+  color: var(--ink);
+  font-family: var(--font-mono), ui-monospace, monospace;
+  font-size: 1.05rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  transition: border-color 180ms var(--e-quint), box-shadow 180ms var(--e-quint);
+}
+.access-input::placeholder { color: var(--ink-mute); letter-spacing: 0.1em; }
+/* The code field is mono, spaced, uppercase, because a code is read character
+   by character off a phone screen. An email or a password is neither read that
+   way nor uppercase, so it drops back to plain text. */
+.access-input--text {
+  font-family: var(--font-sans), system-ui, sans-serif;
+  font-size: 1rem;
+  letter-spacing: normal;
+  text-transform: none;
+}
+.access-input--text::placeholder { letter-spacing: normal; }
+.access-input:focus {
+  outline: 0;
+  border-color: var(--oxblood-bright);
+  box-shadow: 0 0 0 3px rgba(154, 44, 37, 0.24);
+}
+.access-input[aria-invalid="true"] { border-color: var(--oxblood-bright); }
+.access-submit {
+  width: 100%;
+  justify-content: center;
+  min-height: 3.6rem;
+  margin-top: 0.9rem;
+}
+.access-submit:disabled { cursor: wait; opacity: 0.7; }
+.access-error {
+  margin-top: 1rem;
+  padding: 0.85rem 1rem;
+  border: 1px solid var(--oxblood);
+  background: var(--oxblood-deep);
+  color: var(--ink);
+  font-size: 0.84rem;
+  line-height: 1.5;
+}
+.access-note {
+  margin-top: 1.1rem;
+  color: var(--ink-mute);
+  font-size: 0.76rem;
+  line-height: 1.55;
+}
+.access-help {
+  margin-top: 1.75rem;
+  padding-top: 1.25rem;
+  border-top: 1px solid var(--line);
+  color: var(--ink-mute);
+  font-size: 0.78rem;
+}
+.access-help a {
+  color: var(--ink-soft);
+  border-bottom: 1px solid var(--line-strong);
+  transition: color 160ms ease, border-color 160ms ease;
+}
+.access-help a:hover { color: var(--ink); border-color: var(--oxblood-bright); }
+
+/* --------------------------------------------------------------------------
+   Account block on the settings page. No card: a rule and space do the
+   grouping, the way the rest of the platform pages do it.
+   -------------------------------------------------------------------------- */
+.account-panel {
+  max-width: 42rem;
+  margin-bottom: 3rem;
+  padding-bottom: 2.25rem;
+  border-bottom: 1px solid var(--line);
+}
+.account-label {
+  font-family: var(--font-mono), ui-monospace, monospace;
+  font-size: 0.64rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--ink-mute);
+}
+.account-email {
+  margin-top: 0.5rem;
+  font-family: var(--font-display), "Oswald", sans-serif;
+  font-size: clamp(1.35rem, 3vw, 1.9rem);
+  letter-spacing: -0.005em;
+  overflow-wrap: anywhere;
+}
+.account-note {
+  max-width: 34rem;
+  margin-top: 0.9rem;
+  color: var(--ink-soft);
+  font-size: 0.84rem;
+  line-height: 1.6;
+}
+.account-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 1.5rem;
+  margin-top: 1.6rem;
+}
+.account-button {
+  min-height: 2.9rem;
+  padding: 0 1.4rem;
+  border: 1px solid var(--line-strong);
+  color: var(--ink);
+  font-size: 0.82rem;
+  font-weight: 600;
+  transition: border-color 160ms ease, color 160ms ease, transform 140ms ease;
+}
+.account-button:hover { border-color: var(--oxblood-bright); }
+.account-button:active { transform: scale(0.98); }
+.account-button:disabled { cursor: wait; opacity: 0.6; }
+.account-link {
+  border-bottom: 1px solid var(--line-strong);
+  color: var(--ink-soft);
+  font-size: 0.82rem;
+  transition: color 160ms ease, border-color 160ms ease;
+}
+.account-link:hover { color: var(--ink); border-color: var(--oxblood-bright); }
+
+@media (max-width: 860px) {
+  .access-shell { grid-template-columns: 1fr; }
+  .access-identity {
+    min-height: auto;
+    gap: 2.5rem;
+    padding: 1.6rem 1.2rem 2.6rem;
+  }
+  .access-identity::after { width: 90vw; height: 90vw; right: -30vw; bottom: -30vw; }
+  .access-panel {
+    min-height: auto;
+    padding: 1.6rem 1.2rem 3rem;
+    border-left: 0;
+    border-top: 1px solid var(--line);
+  }
+  .access-form { width: 100%; }
+}
+
+/* --------------------------------------------------------------------------
+   Grouped sidebar navigation
+   -------------------------------------------------------------------------- */
+.nav-group + .nav-group {
+  margin-top: 1.35rem;
+  padding-top: 1.1rem;
+  border-top: 1px solid var(--line);
+}
+.nav-group-label {
+  display: block;
+  margin-bottom: 0.5rem;
+  padding-left: 0.75rem;
+  font-family: var(--font-mono), ui-monospace, monospace;
+  font-size: 0.56rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--steel-deep);
+}
+
+/* --------------------------------------------------------------------------
+   Reference sections — nutrition, recovery, injury
+   -------------------------------------------------------------------------- */
+.reference-caveat {
+  max-width: 46rem;
+  margin-top: 1.75rem;
+  padding-left: 1.1rem;
+  border-left: 1px solid var(--line-strong);
+  color: var(--ink-mute);
+  font-size: 0.84rem;
+  line-height: 1.65;
+}
+.reference-item { border-bottom: 1px solid var(--line); }
+.reference-summary {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1.5rem;
+  min-height: 3.5rem;
+  padding: 1.15rem 0;
+  cursor: pointer;
+  list-style: none;
+  font-family: var(--font-display), "Oswald", sans-serif;
+  font-size: clamp(1.15rem, 2.4vw, 1.5rem);
+  line-height: 1.25;
+  color: var(--ink-soft);
+  transition: color 160ms var(--e-quint);
+}
+.reference-summary::-webkit-details-marker { display: none; }
+.reference-summary:hover { color: var(--ink); }
+.reference-summary:focus-visible {
+  outline: 2px solid var(--oxblood-bright);
+  outline-offset: 3px;
+}
+.reference-item[open] > .reference-summary { color: var(--ink); }
+.reference-caret {
+  color: var(--ink-mute);
+  transition: transform 200ms var(--e-quint), color 160ms ease;
+}
+.reference-item[open] .reference-caret {
+  transform: rotate(180deg);
+  color: var(--oxblood-bright);
+}
+.reference-body {
+  max-width: 44rem;
+  padding: 0 0 1.75rem;
+  color: var(--ink-soft);
+  line-height: 1.75;
+}
+.reference-body > p + p { margin-top: 1rem; }
+.reference-list {
+  margin-top: 1.25rem;
+  border-top: 1px solid var(--line);
+}
+.reference-list li {
+  position: relative;
+  padding: 0.7rem 0 0.7rem 1.6rem;
+  border-bottom: 1px solid var(--line);
+  font-size: 0.92rem;
+  color: var(--ink-soft);
+}
+.reference-list li::before {
+  content: "";
+  position: absolute;
+  top: 1.15rem;
+  left: 0.2rem;
+  width: 0.45rem;
+  height: 1px;
+  background: var(--oxblood-bright);
+}
+
+/* The injury medical callout — the loudest element on its page, by intent. */
+.safety-callout {
+  margin-top: 2rem;
+  padding: clamp(1.25rem, 3vw, 2rem);
+  border: 1px solid var(--oxblood-bright);
+  background: linear-gradient(
+    180deg,
+    color-mix(in srgb, var(--oxblood-deep) 55%, transparent),
+    transparent
+  );
+}
+.safety-head { display: flex; gap: 1rem; align-items: flex-start; }
+.safety-head > svg { color: var(--oxblood-bright); flex-shrink: 0; }
+.safety-eyebrow {
+  display: block;
+  font-family: var(--font-mono), ui-monospace, monospace;
+  font-size: 0.64rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--oxblood-bright);
+}
+.safety-title {
+  margin-top: 0.5rem;
+  font-family: var(--font-display), "Oswald", sans-serif;
+  font-size: clamp(1.5rem, 3.6vw, 2.25rem);
+  line-height: 1.05;
+  color: var(--ink);
+}
+.safety-points { margin-top: 1.4rem; }
+.safety-points li {
+  position: relative;
+  max-width: 46rem;
+  padding: 0.6rem 0 0.6rem 1.5rem;
+  color: var(--ink-soft);
+  font-size: 0.92rem;
+  line-height: 1.65;
+}
+.safety-points li::before {
+  content: "";
+  position: absolute;
+  top: 1.15rem;
+  left: 0;
+  width: 0.6rem;
+  height: 1px;
+  background: var(--oxblood-bright);
+}
+
+/* --------------------------------------------------------------------------
+   Motivation diary
+   -------------------------------------------------------------------------- */
+.diary-moods { display: flex; flex-wrap: wrap; gap: 0.5rem; }
+.diary-card {
+  position: relative;
+  margin-top: 1.75rem;
+  padding: clamp(1.5rem, 4vw, 3rem);
+  border: 1px solid var(--line-strong);
+  background: var(--bg-panel);
+  opacity: 1;
+  transform: translateY(0);
+  transition: opacity 260ms var(--e-quint), transform 260ms var(--e-quint);
+}
+.diary-card.is-turning { opacity: 0; transform: translateY(6px); }
+.diary-card-empty { color: var(--ink-mute); }
+.diary-quote { color: var(--oxblood); opacity: 0.7; }
+.diary-meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.9rem;
+  margin-top: 1.25rem;
+  font-family: var(--font-mono), ui-monospace, monospace;
+  font-size: 0.64rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--ink-mute);
+}
+.diary-mood-tag {
+  padding: 0.25rem 0.55rem;
+  border: 1px solid var(--line-strong);
+  color: var(--steel);
+}
+.diary-title {
+  margin-top: 1rem;
+  font-family: var(--font-display), "Oswald", sans-serif;
+  font-size: clamp(1.9rem, 4.5vw, 3rem);
+  line-height: 1.05;
+}
+.diary-body {
+  max-width: 40rem;
+  margin-top: 1.4rem;
+  color: var(--ink-soft);
+  font-size: clamp(1rem, 1.5vw, 1.1rem);
+  line-height: 1.8;
+}
+.diary-body > p + p { margin-top: 1.1rem; }
+.diary-foot {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 1rem 1.5rem;
+  margin-top: 2rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid var(--line);
+}
+.diary-progress {
+  font-family: var(--font-mono), ui-monospace, monospace;
+  font-size: 0.64rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--ink-mute);
+}
+.diary-index-row {
+  display: grid;
+  grid-template-columns: 3.5rem minmax(0, 1fr) auto;
+  gap: 1rem;
+  align-items: baseline;
+  width: 100%;
+  min-height: 3.25rem;
+  padding: 0.9rem 0;
+  border-bottom: 1px solid var(--line);
+  text-align: left;
+}
+.diary-index-row:hover .diary-index-title { color: var(--ink); }
+.diary-index-row[aria-current="true"] .diary-index-title {
+  color: var(--oxblood-bright);
+}
+.diary-index-date {
+  font-family: var(--font-mono), ui-monospace, monospace;
+  font-size: 0.68rem;
+  color: var(--ink-mute);
+}
+.diary-index-title {
+  font-family: var(--font-display), "Oswald", sans-serif;
+  font-size: 1.15rem;
+  color: var(--ink-soft);
+  transition: color 160ms ease;
+}
+.diary-index-mood {
+  font-family: var(--font-mono), ui-monospace, monospace;
+  font-size: 0.6rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--steel-deep);
+}
+
+@media (max-width: 640px) {
+  .reference-summary { gap: 1rem; font-size: 1.08rem; }
+  .diary-index-row {
+    grid-template-columns: 3rem minmax(0, 1fr);
+    row-gap: 0.2rem;
+  }
+  .diary-index-mood { grid-column: 2; }
+}
+
+/* --------------------------------------------------------------------------
+   Reduced motion — keep opacity/color, drop movement
+   -------------------------------------------------------------------------- */
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  .marquee-track { animation: none; }
+  .shimmer { animation: none; }
+  .ember { animation: none; }
+  *, *::before, *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+  }
+}
