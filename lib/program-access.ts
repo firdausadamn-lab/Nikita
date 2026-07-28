@@ -36,9 +36,16 @@ const protectedSections = [
   "/welcome",
 ];
 
+const localePrefix = /^\/(?:ru|en)(?=\/|$)/;
+
 /** Strip a leading /ru or /en so the path rules are written once, not twice. */
 export function stripLocale(pathname: string) {
-  return pathname.replace(/^\/(?:ru|en)(?=\/|$)/, "") || "/";
+  return pathname.replace(localePrefix, "") || "/";
+}
+
+/** Does this path already name a language? */
+export function hasLocalePrefix(pathname: string) {
+  return localePrefix.test(pathname);
 }
 
 export function isAccessPath(pathname: string) {
@@ -93,11 +100,20 @@ export function safeReturnPath(
   if (!from.startsWith("/") || from.startsWith("//")) return fallback;
   if (from.includes("\\")) return fallback;
 
-  const path = stripLocale(from.split("?")[0]);
+  const [rawPath, ...rest] = from.split("?");
+  const query = rest.length > 0 ? `?${rest.join("?")}` : "";
+  const path = stripLocale(rawPath);
 
   // Never bounce back into the sign-in flow itself.
   if (authPaths.includes(path) && !allowAuthPaths.includes(path)) {
     return fallback;
+  }
+
+  // A path with no language in it has no page behind it — everything lives
+  // under app/[locale]/. Returning "/" here is what used to drop a freshly
+  // signed-in athlete onto a 404 the moment they finished signing in.
+  if (!hasLocalePrefix(rawPath)) {
+    return `/${locale}${path === "/" ? "" : path}${query}`;
   }
 
   return from;

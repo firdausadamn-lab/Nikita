@@ -88,6 +88,30 @@ describe("return path after sign-in", () => {
     expect(safeReturnPath("/en/reset-password", "en")).toBe("/en");
   });
 
+  // The regression that put a 404 on the front door. Every page lives under
+  // app/[locale]/, so a return path with no language in it resolves to nothing.
+  // Signing in used to hand back "/" verbatim, dropping the athlete on a 404 at
+  // the exact moment they finished signing up.
+  it.each([
+    ["/", "ru", "/ru"],
+    ["/", "en", "/en"],
+    ["/training/program", "ru", "/ru/training/program"],
+    ["/welcome", "en", "/en/welcome"],
+  ])(
+    "gives %s a locale, so it lands on a page that exists",
+    (from, locale, expected) => {
+      expect(safeReturnPath(from, locale)).toBe(expected);
+    },
+  );
+
+  it("keeps the query string while adding the missing locale", () => {
+    expect(safeReturnPath("/training?week=3", "ru")).toBe("/ru/training?week=3");
+  });
+
+  it("leaves a path that already names a language alone", () => {
+    expect(safeReturnPath("/en/training", "ru")).toBe("/en/training");
+  });
+
   it("allows the reset page when it is the intended destination", () => {
     // What /auth/callback does with the link out of the email.
     expect(safeReturnPath("/en/reset-password", "en", ["/reset-password"])).toBe(

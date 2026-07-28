@@ -38,11 +38,36 @@ export async function middleware(request: NextRequest) {
     return NextResponse.next();
   }
 
-  const locale =
-    locales.find(
-      (value) => pathname === `/${value}` || pathname.startsWith(`/${value}/`),
-    ) ?? defaultLocale;
+  // --- Locale first. Always. ------------------------------------------------
+  //
+  // This ordering is load-bearing, and having it backwards is what put a 404 on
+  // the front door.
+  //
+  // Every page lives under app/[locale]/. There is no app/page.tsx, so nothing
+  // can render at a bare "/" — Next has no route to match. The gate below used
+  // to run first, and for a signed-in visitor it ended at
+  // NextResponse.next(), which handed "/" straight to Next and got a 404. The
+  // locale redirect sat underneath it, unreachable.
+  //
+  // It hid well, because signed out you got bounced to /ru/access before ever
+  // reaching that line — and then ?from=/ sent you back to "/" after logging
+  // in, so the 404 turned up one step later instead. Which is exactly why it
+  // looked like it happened regardless of login state.
+  //
+  // Normalising the locale up here means the gate only ever sees a path that
+  // has a page behind it.
+  const locale = locales.find(
+    (value) => pathname === `/${value}` || pathname.startsWith(`/${value}/`),
+  );
 
+  if (!locale) {
+    const url = request.nextUrl.clone();
+    url.pathname = `/${defaultLocale}${pathname === "/" ? "" : pathname}`;
+    // clone() carries the query string over, so nothing is dropped on the way.
+    return NextResponse.redirect(url);
+  }
+
+  // --- Then the gate, on a path that is guaranteed to resolve ---------------
   if (isProtectedProgramPath(pathname)) {
     const turnAway = () => {
       const url = request.nextUrl.clone();
@@ -76,16 +101,7 @@ export async function middleware(request: NextRequest) {
     return session.commit(NextResponse.next());
   }
 
-  const hasLocale = locales.some(
-    (value) => pathname === `/${value}` || pathname.startsWith(`/${value}/`),
-  );
-
-  if (!hasLocale) {
-    const url = request.nextUrl.clone();
-    url.pathname = `/${defaultLocale}${pathname === "/" ? "" : pathname}`;
-    return NextResponse.redirect(url);
-  }
-
+  // Public, locale-prefixed pages: the marketing and legal side of the site.
   return NextResponse.next();
 }
 
